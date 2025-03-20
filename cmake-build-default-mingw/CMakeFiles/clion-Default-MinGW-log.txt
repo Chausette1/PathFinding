@@ -1,0 +1,54 @@
+"C:\Program Files\JetBrains\CLion 2024.3.4\bin\cmake\win\x64\bin\cmake.exe" "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2024.3.4/bin/ninja/win/x64/ninja.exe" -G Ninja -S "C:\Users\Chausette\OneDrive - Haute Ecole Louvain en Hainaut\Documents\cours\helha-B1\Algo Q2\Pathfinding" -B "C:\Users\Chausette\OneDrive - Haute Ecole Louvain en Hainaut\Documents\cours\helha-B1\Algo Q2\Pathfinding\cmake-build-default-mingw"
+-- The CXX compiler identification is GNU 13.1.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/JetBrains/CLion 2024.3.4/bin/mingw/bin/g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Téléchargement de raylib depuis GitHub...
+Cloning into 'raylib-src'...
+remote: Enumerating objects: 7700, done.        
+remote: Counting objects: 100% (7700/7700), done.        
+remote: Compressing objects: 100% (4884/4884), done.        
+remote: Total 7700 (delta 4880), reused 4862 (delta 2697), pack-reused 0 (from 0)        
+Receiving objects: 100% (7700/7700), 249.59 MiB | 8.98 MiB/s, done.
+Resolving deltas: 100% (4880/4880), done.
+error: unable to create file projects/VS2019-Android/raylib_android/raylib_android.NativeActivity/raylib_android.NativeActivity.vcxproj.filters: Filename too long
+error: unable to create file projects/VS2019-Android/raylib_android/raylib_android.NativeActivity/raylib_android.NativeActivity.vcxproj.user: Filename too long
+D	projects/VS2019-Android/raylib_android/raylib_android.NativeActivity/raylib_android.NativeActivity.vcxproj.filters
+D	projects/VS2019-Android/raylib_android/raylib_android.NativeActivity/raylib_android.NativeActivity.vcxproj.user
+HEAD is now at c1ab645 Update HISTORY.md
+-- The C compiler identification is GNU 13.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/JetBrains/CLion 2024.3.4/bin/mingw/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test COMPILER_HAS_THOSE_TOGGLES
+-- Performing Test COMPILER_HAS_THOSE_TOGGLES - Success
+-- Testing if -Werror=pointer-arith can be used -- compiles
+-- Testing if -Werror=implicit-function-declaration can be used -- compiles
+-- Testing if -fno-strict-aliasing can be used -- compiles
+CMake Warning at cmake-build-default-mingw/_deps/raylib-src/src/CMakeLists.txt:14 (message):
+  Default build type is not set (CMAKE_BUILD_TYPE)
+
+
+-- Setting build type to '' as none was specified.
+-- Using raylib's GLFW
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Including Win32 support
+-- Looking for dinput.h
+-- Looking for dinput.h - found
+-- Looking for xinput.h
+-- Looking for xinput.h - found
+-- Audio Backend: miniaudio
+-- Building raylib static library
+-- Generated build type: 
+-- Compiling with the flags:
+--   PLATFORM=PLATFORM_DESKTOP
+--   GRAPHICS=GRAPHICS_API_OPENGL_33
+-- Configuring done (42.8s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/Chausette/OneDrive - Haute Ecole Louvain en Hainaut/Documents/cours/helha-B1/Algo Q2/PathFinding/cmake-build-default-mingw

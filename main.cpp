@@ -30,3 +30,36 @@ int main() {
 
     return 0;  // Fin du programme
 }
+
+void tableau() {
+
+
+    const int screenWidth = 1200;
+    const int screenHeight = 1000;
+    InitWindow(screenWidth, screenHeight, "MazeSolvers");
+
+    const int TabSizeX = 200;
+    const int TabSizeY = 200;
+    const int cellSize = 10;
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+
+        ClearBackground(RAYWHITE);
+
+        for (int x = 0; x < TabSizeX; x++) {
+            for (int y = 0; y < TabSizeY; y++) {
+                int posX = x * cellSize;
+                int posY = y * cellSize;
+
+                DrawRectangle(posX, posY, cellSize, cellSize, LIGHTGRAY);
+                DrawRectangleLines(posX, posY, cellSize, cellSize, BLACK);
+            }
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}

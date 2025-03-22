@@ -4,6 +4,7 @@
 
 #include "Labyrinth.h"
 
+
 Labyrinth::Labyrinth() {
     constexpr int arraySize = 25;
     rows = arraySize;
@@ -50,6 +51,10 @@ Labyrinth::Labyrinth() {
     }
 }
 
+std::tuple<int,int> Labyrinth::GetDimension() const {
+    return std::make_tuple(this->rows, cols);
+}
+
 void Labyrinth::Print() const {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -59,3 +64,6 @@ void Labyrinth::Print() const {
     }
 }
 
+Cellule Labyrinth::GetCellule(int x, int y) const {
+    return array[x][y];
+}

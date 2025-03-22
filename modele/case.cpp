@@ -14,13 +14,21 @@ Cellule::Cellule(const std::tuple<int,int> &coordinateOfCellule,const int baseNu
     else {
         isWall = false;
     }
-    auto [x,y] = coordinateOfCellule;
 }
 
 void Cellule::Print() const {
     std::string ToPrint = std::format("{} ", number);
     std::cout << ToPrint;
 }
+
+std::tuple<int, int> Cellule::getCoordinate() const {
+    return coordinate;
+}
+
+int Cellule::getNumber() const {
+    return number;
+}
+
 
 
 

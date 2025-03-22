@@ -36,7 +36,9 @@ add_executable(PathFinding main.cpp
         modele/Labyrinth.cpp
         modele/Labyrinth.h
         modele/case.cpp
-        modele/case.h)  # Remplacez main.cpp par vos fichiers sources
+        modele/case.h
+        Vue.cpp
+        Vue.h)  # Remplacez main.cpp par vos fichiers sources
 
 # Configurer les répertoires d'inclusion
 target_include_directories(PathFinding PRIVATE ${raylib_INCLUDE_DIRS})

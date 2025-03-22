@@ -47,6 +47,12 @@ Labyrinth::Labyrinth() {
         for (int j = 0; j < arraySize; j++) {
             Cellule cellule(std::tuple<int,int>(i,j), intArray[i][j]);
             array[i][j] = cellule;
+            if (cellule.getNumber() == -1) {
+                Start = cellule;
+            }
+            if (cellule.getNumber() == -2) {
+                End = cellule;
+            }
         }
     }
 }
@@ -66,4 +72,12 @@ void Labyrinth::Print() const {
 
 Cellule Labyrinth::GetCellule(int x, int y) const {
     return array[x][y];
+}
+
+Cellule Labyrinth::GetStart() const {
+    return Start;
+}
+
+Cellule Labyrinth::GetEnd() const {
+    return End;
 }

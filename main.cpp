@@ -21,7 +21,9 @@ int main() {
 }
 
 void PathFindings(Labyrinth labyrinth) {
-
+    Cellule start = labyrinth.GetStart();
+    Cellule end = labyrinth.GetEnd();
+    
 }
 
 

@@ -4,6 +4,8 @@ project(PathFinding CXX)  # Spécifiez que c'est un projet C++
 
 set(CMAKE_CXX_STANDARD 20)  # Utilisez C++ 20(ou une version plus récente si nécessaire)
 
+
+
 # Inclure la commande pour télécharger des dépendances
 include(FetchContent)
 
@@ -37,8 +39,8 @@ add_executable(PathFinding main.cpp
         modele/Labyrinth.h
         modele/case.cpp
         modele/case.h
-        Vue.cpp
-        Vue.h)  # Remplacez main.cpp par vos fichiers sources
+        Vue/Vue.cpp
+        Vue/Vue.h)  # Remplacez main.cpp par vos fichiers sources
 
 # Configurer les répertoires d'inclusion
 target_include_directories(PathFinding PRIVATE ${raylib_INCLUDE_DIRS})

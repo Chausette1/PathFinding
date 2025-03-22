@@ -5,8 +5,8 @@
 #ifndef LABYRINTH_H
 #define LABYRINTH_H
 
-#include "case.h";
-#include <iostream>;
+#include "case.h"
+#include <iostream>
 #include <array>
 
 class Labyrinth {

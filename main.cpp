@@ -1,8 +1,9 @@
 #include "raylib.h"  // Inclure l'en-tête de Raylib
-#include "Vue.h"
+#include "Vue/Vue.h"
 #include "modele/Labyrinth.h"
 
-void DrawLabyrinth(Labyrinth labyrinth, int cellSize);
+void DrawLabyrinth(Labyrinth labyrinth, int cellSize, Vue vue);
+void PathFindings(Labyrinth labyrinth);
 
 int main() {
     Labyrinth labyrinth;
@@ -11,7 +12,7 @@ int main() {
     while (!WindowShouldClose()) {
         BeginDrawing();
 
-        DrawLabyrinth(labyrinth, vue.GetScreenWidth());
+        DrawLabyrinth(labyrinth, vue.GetScreenWidth(), vue);
 
         EndDrawing();
     }
@@ -19,14 +20,42 @@ int main() {
     return 0; // Fin du programme
 }
 
-void DrawLabyrinth(Labyrinth labyrinth, int cellSize) {
+void PathFindings(Labyrinth labyrinth) {
+
+}
+
+
+void GetColorByNumber(Color &backColor, Cellule const &cellule) {
+    if (cellule.getNumber() == 0) {
+        backColor = WHITE;
+    } else if (cellule.getNumber() == -1) {
+        backColor = GREEN;
+    }
+    else if (cellule.getNumber() == -2) {
+        backColor = BLUE;
+    }
+    else {
+        backColor = BLACK;
+    }
+}
+
+void PrintNumber(int posY, int posX, Cellule const &cellule, Font const &fontChose, int const cellSize) {
+    posX = posX + cellSize/2;
+    posY = posY + cellSize/2;
+    int const NumberToPrint = (48 + cellule.getNumber());
+    Vector2 const Coord(static_cast<float>(posY), static_cast<float>(posX));
+    DrawTextCodepoint(fontChose, NumberToPrint, Coord, 16, BLACK);
+
+}
+
+void DrawLabyrinth(Labyrinth const labyrinth, int cellSize, Vue const vue) {
     ClearBackground(RAYWHITE);
 
     std::tuple dimension = labyrinth.GetDimension();
     auto [TabSizeX, TabSizeY] = dimension;
 
-    int decalage = cellSize * 0.125;
-    cellSize = cellSize * 0.75;
+    int decalage = static_cast<int>(cellSize * 0.125);
+    cellSize = static_cast<int>(cellSize * 0.75);
     cellSize = cellSize / TabSizeX;
 
     for (int x = 0; x < TabSizeX; x++) {
@@ -36,18 +65,18 @@ void DrawLabyrinth(Labyrinth labyrinth, int cellSize) {
 
             Color backColor;
             Cellule cellule = labyrinth.GetCellule(x, y);
-            if (cellule.getNumber() == 0) {
-                backColor = {255, 255, 255, 255};
-            } else if (cellule.getNumber() == -1) {
-                backColor = GREEN;
-            }
-            else if (cellule.getNumber() == -2) {
-                backColor = BLUE;
+            GetColorByNumber(backColor, cellule);
+
+            if (cellule.getNumber() == 1 || cellule.getNumber() == 0) {
+                DrawRectangle(posY, posX, cellSize, cellSize, backColor);
             }
             else {
-                backColor = {0, 0, 0, 255};
+                posX = posX + cellSize/2;
+                posY = posY + cellSize/2;
+                DrawCircle(posY, posX, static_cast<char>(cellSize/2), backColor);
             }
-            DrawRectangle(posX, posY, cellSize, cellSize, backColor);
+
+            PrintNumber(posY, posX, cellule, vue.GetFont(), cellSize);
             //DrawRectangleLines(posX, posY, cellSize, cellSize, BLACK);
         }
     }

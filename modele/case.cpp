@@ -29,6 +29,22 @@ int Cellule::getNumber() const {
     return number;
 }
 
+void Cellule::setNumber(int newNumber) {
+    number = newNumber;
+}
 
+bool Cellule::getIsWall() const {
+    return isWall;
+}
 
+bool Cellule::IsSameCellule(const Cellule &other) const {
+    auto [myX, myY] = this->coordinate;
+    auto [otherX, otherY] = other.coordinate;
+    bool Return = (myX == otherX) && (myY == otherY);
+    return Return;
+}
 
+std::string Cellule::coordinateToString() const {
+    auto [x, y] = coordinate;
+    return std::format("{} {}", x, y);
+}

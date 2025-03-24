@@ -6,26 +6,29 @@
 #define LABYRINTH_H
 
 #include "case.h"
+#include <memory>
 #include <iostream>
 #include <array>
 
 class Labyrinth {
 private:
-    Cellule** array;
+    std::vector<std::vector<std::shared_ptr<Cellule>>> array;
     int rows;
     int cols;
-    Cellule Start;
-    Cellule End;
-
+    std::shared_ptr<Cellule>  Start;
+    std::shared_ptr<Cellule>  End;
+    void _BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque<std::shared_ptr<Cellule> > &queue, std::shared_ptr<Cellule>  &end, int count = 1);
 public:
     Labyrinth();
     void Print() const;
     std::tuple<int,int> GetDimension() const;
-    Cellule GetCellule(int x, int y) const;
-    Cellule GetStart() const;
-    Cellule GetEnd() const;
+    std::shared_ptr<Cellule>  GetCellule(int x, int y) const;
+    std::shared_ptr<Cellule>  GetStart() const;
+    std::shared_ptr<Cellule>  GetEnd() const;
     int getRows() const;
     int getCols() const;
+    void PathFiding();
+    std::vector<std::shared_ptr<Cellule> > GetNeighbor(std::shared_ptr<Cellule>  maCellule);
 };
 
 

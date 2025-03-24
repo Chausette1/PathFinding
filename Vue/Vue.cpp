@@ -13,7 +13,6 @@ Vue::Vue(const int Width, const int Height) {
 	SetTargetFPS(60);
 
     this->font = LoadFont("_deps/raylib-src/examples/text/resources/fonts/pixelplay.png");
-    std::cout << "font load";
 }
 
 int Vue::GetScreenWidth() const{

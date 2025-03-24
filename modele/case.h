@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <deque>
 //
 // Created by Chausette on 20-03-25.
 //
@@ -22,7 +24,10 @@ public:
     bool getIsWall() const;
     std::tuple<int, int> getCoordinate() const; // Const car elle ne modifie pas l'objet
     int getNumber() const; // Const car elle ne modifie pas l'objet
+    void setNumber(int newNumber);
     void Print() const;
+    bool IsSameCellule(const Cellule& other) const;
+    std::string coordinateToString() const;
 };
 
 

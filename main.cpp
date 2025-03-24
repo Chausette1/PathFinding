@@ -1,6 +1,8 @@
 #include "raylib.h"  // Inclure l'en-tête de Raylib
 #include "Vue/Vue.h"
 #include "modele/Labyrinth.h"
+#include <vector>
+#include <external/glad.h>
 
 void DrawLabyrinth(Labyrinth labyrinth, int cellSize, Vue vue);
 void PathFindings(Labyrinth labyrinth);
@@ -20,9 +22,37 @@ int main() {
     return 0; // Fin du programme
 }
 
+std::array <std :: tuple<int, int>, 4> GetNeighbor (Cellule maCellule, Labyrinth labyrinth)
+{
+    std::array <std :: tuple<int, int>, 4> ReturnNeighbor;
+    std::tuple<int,int> coordinateOfmaCellule = maCellule.getCoordinate();
+    auto [cellX, cellY] = coordinateOfmaCellule;
+    int maxX = labyrinth.getCols();
+    int maxY = labyrinth.getRows();
+    int minX = 0;
+    int minY = 0;
+    std::tuple<int,int> UpNeighbor = std::tuple<int,int>(cellX , cellY+1);
+    if (UpNeighbor > minY) {
+       ReturnNeighbor[0] = UpNeighbor;
+    }
+    std::tuple<int,int> DownNeighbor = std::tuple<int,int>(cellX , cellY-1);
+    std::tuple<int,int> LeftNeighbor = std::tuple<int,int>(cellX-1 , cellY);
+    std::tuple<int,int> RightNeighbor = std::tuple<int,int>(cellX+1 , cellY);
+
+}
+
 void PathFindings(Labyrinth labyrinth) {
+    void _BFS (std::vector<Cellule> visited, std::vector<Cellule> queue,Cellule end)
+    {
+
+    }
+
+    std::vector<Cellule> visited;
+    std::vector<Cellule> queue;
+
     Cellule start = labyrinth.GetStart();
     Cellule end = labyrinth.GetEnd();
+    queue.push_back(start);
     
 }
 

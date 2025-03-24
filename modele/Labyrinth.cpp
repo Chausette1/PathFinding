@@ -81,3 +81,11 @@ Cellule Labyrinth::GetStart() const {
 Cellule Labyrinth::GetEnd() const {
     return End;
 }
+
+int Labyrinth::getCols() const {
+    return cols;
+}
+
+int Labyrinth::getRows() const {
+    return rows;
+}

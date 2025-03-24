@@ -24,6 +24,8 @@ public:
     Cellule GetCellule(int x, int y) const;
     Cellule GetStart() const;
     Cellule GetEnd() const;
+    int getRows() const;
+    int getCols() const;
 };
 
 

@@ -6,7 +6,9 @@
 #define LABYRINTH_H
 
 #include "case.h"
+#include "../vue/vue.h"
 #include <memory>
+#include <thread>
 #include <iostream>
 #include <array>
 
@@ -17,7 +19,10 @@ private:
     int cols;
     std::shared_ptr<Cellule>  Start;
     std::shared_ptr<Cellule>  End;
-    void _BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque<std::shared_ptr<Cellule> > &queue, std::shared_ptr<Cellule>  &end, int count = 1);
+    void _BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque<std::shared_ptr<Cellule> > &queue, std::shared_ptr<Cellule>  &end, Vue vue);
+    void GetColorByNumber(Color &backColor, Cellule const &cellule);
+    void PrintNumber(int posY, int posX, Cellule const &cellule, Font const &fontChose, int const cellSize);
+
 public:
     Labyrinth();
     void Print() const;
@@ -27,8 +32,10 @@ public:
     std::shared_ptr<Cellule>  GetEnd() const;
     int getRows() const;
     int getCols() const;
-    void PathFiding();
+    void PathFiding(Vue vue);
     std::vector<std::shared_ptr<Cellule> > GetNeighbor(std::shared_ptr<Cellule>  maCellule);
+    void DrawLabyrinth(Vue const vue);
+    void DiscoverShortestPath(Vue vue);
 };
 
 

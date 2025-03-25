@@ -48,3 +48,11 @@ std::string Cellule::coordinateToString() const {
     auto [x, y] = coordinate;
     return std::format("{} {}", x, y);
 }
+
+bool Cellule::GetIsInShortestPath() const {
+    return InShortestPath;
+}
+
+void Cellule::SetIsInShortestPath(bool newIsInShortestPath) {
+    InShortestPath = newIsInShortestPath;
+}

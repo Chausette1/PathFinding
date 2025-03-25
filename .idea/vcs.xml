@@ -4,11 +4,11 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/flac-src" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/freetype-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/freetype-src/subprojects/dlg" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/ogg-src" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/raylib-src" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/sfml-src" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug-mingw/_deps/vorbis-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/raylib-src" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-default-mingw/_deps/raylib-src" vcs="Git" />
   </component>
 </project>

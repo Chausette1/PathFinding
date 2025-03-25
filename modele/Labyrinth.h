@@ -7,6 +7,10 @@
 
 #include "case.h"
 #include <memory>
+#include <vector>
+#include <memory>
+#include <stack>
+#include <tuple>
 #include <iostream>
 #include <array>
 
@@ -29,6 +33,12 @@ public:
     int getCols() const;
     void PathFiding();
     std::vector<std::shared_ptr<Cellule> > GetNeighbor(std::shared_ptr<Cellule>  maCellule);
+
+    void GenerateMaze();
+    void DrawMaze();
+    Labyrinth(int rows, int cols);
+
+
 };
 
 

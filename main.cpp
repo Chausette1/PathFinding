@@ -1,12 +1,15 @@
 #include "raylib.h"  // Inclure l'en-tête de Raylib
 #include "Vue/Vue.h"
 #include "modele/Labyrinth.h"
+#include "Labyrinth.h"
+
 #include <vector>
 #include <deque>
 
 void DrawLabyrinth(Labyrinth labyrinth, int cellSize, Vue vue);
 
 int main() {
+    Labyrinth lab(25,25);
     Labyrinth labyrinth;
     labyrinth.Print();
     Vue vue = Vue(1000, 1000);
@@ -15,7 +18,7 @@ int main() {
     while (!WindowShouldClose()) {
         BeginDrawing();
 
-        DrawLabyrinth(labyrinth, vue.GetScreenWidth(), vue);
+    lab.DrawMaze();
 
         EndDrawing();
     }
@@ -75,4 +78,5 @@ void DrawLabyrinth(Labyrinth const labyrinth, int cellSize, Vue const vue) {
             //DrawRectangleLines(posX, posY, cellSize, cellSize, BLACK);
         }
     }
+
 }

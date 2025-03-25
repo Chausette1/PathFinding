@@ -1,9 +1,14 @@
-//
-// Created by Chausette on 20-03-25.
-//
-
-#include "Labyrinth.h"
-
+#include "labyrinth.h"
+#include <iostream>
+#include <stack>
+#include <tuple>
+#include <random>
+#include <algorithm>
+#include "raylib.h"
+#include <stack>
+Labyrinth::Labyrinth(int r, int c) : rows(r), cols(c) {
+    GenerateMaze();
+}
 
 Labyrinth::Labyrinth() {
     constexpr int arraySize = 25;
@@ -145,3 +150,74 @@ void Labyrinth::PathFiding() {
     queue.push_back(Start);
     _BFS(visited, queue, End);
 }
+
+void Labyrinth::GenerateMaze() {
+    rows = 25;
+    cols = 25;
+
+    array.clear();
+    array.resize(rows,std::vector<std::shared_ptr<Cellule>>(cols));
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            array[i][j]=std::make_shared<Cellule>(std::tuple<int,int>(i,j),1);
+        }
+    }
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int startX = 1;
+    int startY = 1;
+    array[startX][startY]->setNumber(0);
+    Start = array[startX][startY];
+
+    std::stack<std::tuple<int, int>> stack;
+
+
+    stack.push({startX,startY});
+
+    std::vector<std::tuple<int,int>> directions = {{0, -2}, {0, 2}, {-2, 0}, {2, 0}};
+
+    while (!stack.empty()) {
+        auto[x,y] = stack.top();
+        stack.pop();
+
+        std::shuffle(directions.begin(),directions.end(),gen);
+
+        for (auto [dx,dy] : directions) {
+            int nx = x+dx;
+            int ny = y+dy;
+
+            if (nx > 0 && nx < rows - 1 && ny > 0 && ny < cols -1 && array [nx][ny]->getNumber()==1) {
+                array[nx][ny]->setNumber(0);
+                array[x + dx / 2][y + dy / 2]->setNumber(0);
+                stack.push({nx, ny});
+
+            }
+        }
+    }
+    End = array[rows - 2][cols - 2];
+    End->setNumber(-2);
+
+
+}
+
+void Labyrinth::DrawMaze() {
+    int cellSize = GetScreenWidth() / cols;
+
+    for (int i =0; i< rows; i++) {
+        for (int j =0; j<cols;j++) {
+            int x= j * cellSize;
+            int y= i * cellSize;
+
+            if (array[i][j]->getNumber() == 1) {
+                DrawRectangle(x, y, cellSize, cellSize, BLACK);
+            } else if (array[i][j]->getNumber() == -2) {
+                DrawRectangle(x, y, cellSize, cellSize, RED);
+            } else {
+                DrawRectangle(x, y, cellSize, cellSize, WHITE);
+            }
+        }
+    }
+}
+

@@ -3,6 +3,10 @@
 //
 
 #include "Labyrinth.h"
+#include <random>
+#include <algorithm>
+#include <stack>
+#include <array>
 
 
 Labyrinth::Labyrinth() {
@@ -113,8 +117,11 @@ std::vector<std::shared_ptr<Cellule> > Labyrinth::GetNeighbor(std::shared_ptr<Ce
     return ReturnNeighbor;
 }
 
-void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque<std::shared_ptr<Cellule> > &queue,
-                     std::shared_ptr<Cellule> &end, Vue vue) {
+void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule>>& visited,
+                    std::deque<std::shared_ptr<Cellule>>& queue,
+                    std::shared_ptr<Cellule>& end, Vue vue) {
+    std:: unordered_map <std::shared_ptr<Cellule>, std::shared_ptr<Cellule>> parent;
+
     int layerSize = 1, NextLayerSize = 0, layer = 0;
     while (!queue.empty()) {
         if (layerSize == 0) {
@@ -122,7 +129,6 @@ void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque
             NextLayerSize = 0;
             layer++;
             this->DrawLabyrinth(vue);
-            using namespace std::chrono_literals;
             std::this_thread::sleep_for(100ms);
         }
 
@@ -136,105 +142,79 @@ void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque
             return;
         }
 
-        std::vector<std::shared_ptr<Cellule> > Neighbors = GetNeighbor(CurrentCellule);
-        for (std::shared_ptr<Cellule> neighbor: Neighbors) {
+        std::vector<std::shared_ptr<Cellule>> Neighbors = GetNeighbor(CurrentCellule);
+        for (std::shared_ptr<Cellule> neighbor : Neighbors) {
             bool IsVisited = false;
-            for (std::shared_ptr<Cellule> vis: visited) {
+            for (std::shared_ptr<Cellule> vis : visited) {
                 IsVisited = neighbor->IsSameCellule(*vis);
                 if (IsVisited) break;
             }
             if (!neighbor->getIsWall() && !IsVisited) {
+                parent[neighbor] = CurrentCellule;
                 queue.push_back(neighbor);
                 NextLayerSize++;
+                neighbor->setNumber(layer + 1);
+            }
+        }
+    }
+}
+
+void Labyrinth::DiscoverShortestPath(Vue vue) {
+    std::shared_ptr<Cellule> current = End;
+
+    while (current != Start) {
+        current->SetIsInShortestPath(true);
+        this->DrawLabyrinth(vue);
+        std::this_thread::sleep_for(100ms);
+
+        std::vector<std::shared_ptr<Cellule>> neighbors = GetNeighbor(current);
+        std::shared_ptr<Cellule> next = nullptr;
+        int minValue = INT_MAX;
+
+        for (auto neighbor : neighbors) {
+            if (neighbor->getNumber() < minValue && !neighbor->getIsWall()) {
+                minValue = neighbor->getNumber();
+                next = neighbor;
             }
         }
 
-        CurrentCellule->setNumber(layer);
+        if (!next) break;
+        current = next;
+    }
+
+    Start->SetIsInShortestPath(true);
+    this->DrawLabyrinth(vue);
+}
+
+void Labyrinth::GetColorByNumber(Color& backColor, Cellule const& cellule) {
+    if (cellule.getIsWall()) {
+        backColor = BLACK;
+    }
+    else if (cellule.GetIsInShortestPath()) {
+        backColor = RED;
+    }
+    else if (cellule.getNumber() == -1) {
+        backColor = GREEN;
+    }
+    else if (cellule.getNumber() == -2) {
+        backColor = BLUE;
+    }
+    else if (cellule.getNumber() > 0) {
+        int intensity = std::min(200, cellule.getNumber() * 5);
+        backColor = Color(100, 100, 255 - intensity, 150);
+    }
+    else {
+        backColor = WHITE;
     }
 }
 
 void Labyrinth::PathFiding(Vue vue) {
-    std::vector<std::shared_ptr<Cellule> > visited;
-    std::deque<std::shared_ptr<Cellule> > queue;
+    std::vector<std::shared_ptr<Cellule>> visited;
+    std::deque<std::shared_ptr<Cellule>> queue;
     queue.push_back(Start);
     _BFS(visited, queue, End, vue);
+    DiscoverShortestPath(vue);
 }
-
-void Labyrinth::DiscoverShortestPath(Vue vue) {
-    std::shared_ptr<Cellule> temp;
-    std::vector<std::shared_ptr<Cellule> >neigbhors = GetNeighbor(End);
-    temp = neigbhors[0];
-    for (std::shared_ptr<Cellule> neighbor: neigbhors) {
-        if (neighbor->getNumber() > temp->getNumber()) {
-            temp = neighbor;
-        }
-    }
-    std::shared_ptr<Cellule> currentCellule = temp;
-    while (currentCellule->getNumber() != -1) {
-        currentCellule->SetIsInShortestPath(true);
-        this->DrawLabyrinth(vue);
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(100ms);
-        std::vector<std::shared_ptr<Cellule> >neigbhors = GetNeighbor(currentCellule);
-        for (std::shared_ptr<Cellule> neighbor: neigbhors) {
-            if ((neighbor->getNumber() < currentCellule->getNumber()) && neighbor->getNumber() != -2 && !neighbor->getIsWall()) {
-                currentCellule = neighbor;
-            }
-        }
-        if (currentCellule->getNumber() == -1) {
-            break;
-        }
-    }
-}
-
-
-void Labyrinth::GetColorByNumber(Color &backColor, Cellule const &cellule) {
-    if (cellule.getIsWall()) {
-        backColor = BLACK;
-    } else if (cellule.GetIsInShortestPath()) {
-        backColor = Color(255,139,223,255);
-        return;
-    } else{
-        int num = cellule.getNumber();
-        if (num == 0 || num == -1 || num == -2) {
-            backColor = WHITE;
-            return;
-        }
-        int pas = 5;
-        int R = 139,G = 255,B = 243, A = 255;
-        if (num <= (255/pas)*1) {
-            R = 255;
-            G = 0 +  num * pas;
-            B = 0;
-        }
-        else if (num <= (255/pas)*2) {
-            R = 255 - num * pas;
-            G = 255;
-            B = 0;
-        }
-        else if (num <= (255/pas)*3) {
-            R = 0;
-            G = 255;
-            B = 0 + num * pas;
-        }
-        else if (num <= (255/pas)*4) {
-            R = 0;
-            G = 255 - num * pas;
-            B = 255;
-        }else if (num <=(255/pas)*5) {
-            R = 0 + num * pas;
-            G = 0;
-            B = 255;
-        }
-        else if (num <= (255/pas)*6) {
-            R = 255;
-            G = 0;
-            B = 255 - num * pas;
-        }
-        backColor = Color(R,G,B,A);
-    }
-}
-
 void Labyrinth::DrawLabyrinth(Vue const vue) {
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -271,7 +251,13 @@ void Labyrinth::DrawLabyrinth(Vue const vue) {
         }
     }
     EndDrawing();
+
+
 }
+
+
+
+
 
 void Labyrinth::PrintNumber(int posY, int posX, Cellule const &cellule, Font const &fontChose, int const cellSize) {
     posY = posY + cellSize / 4;
@@ -279,5 +265,77 @@ void Labyrinth::PrintNumber(int posY, int posX, Cellule const &cellule, Font con
     std::string str = std::to_string(cellule.getNumber());
     const char *charToPrint = str.c_str();
     DrawText(charToPrint, posY, posX, 16, BLACK);
+}
+
+void Labyrinth::GenerateMaze(){
+    rows=25;
+    cols=25;
+
+    array.clear();
+    array.resize(rows,std::vector<std::shared_ptr<Cellule>>(cols));
+
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            array[i][j]=std::make_shared<Cellule>(std::tuple<int,int>(i,j),1);
+        }
+    }
+    std::random_device rd;
+    std:: mt19937 gen (rd());
+
+    int startX=1;
+    int startY=1;
+    array[startX][startY]->setNumber(0);
+    Start=array[startX][startY];
+
+    std::stack<std::tuple<int,int>>stack;
+
+
+    stack.push({startX,startY});
+
+    std::vector<std::tuple<int,int>>directions={{0,-2},{0,2},{-2,0},{2,0}};
+
+    while(!stack.empty()){
+        auto[x,y]=stack.top();
+        stack.pop();
+
+        std::shuffle(directions.begin(),directions.end(),gen);
+
+        for(auto[dx,dy]:directions){
+            int nx=x+dx;
+            int ny=y+dy;
+
+            if(nx>0&&nx<rows-1&&ny>0&&ny<cols-1&&array[nx][ny]->getNumber()==1){
+                array[nx][ny]->setNumber(0);
+                array[x+dx/2][y+dy/2]->setNumber(0);
+                stack.push({nx,ny});
+
+            }
+        }
+    }
+    End = array [rows-2][cols-2];
+    End->setNumber(-2);
+
+
+}
+
+
+
+void Labyrinth :: DrawMaze(Vue vue){
+    int cellSize=GetScreenWidth()/cols;
+
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            int x=j*cellSize;
+            int y=i*cellSize;
+
+            if(array[i][j]->getNumber()==1){
+                DrawRectangle(x,y,cellSize,cellSize,BLACK);
+            }else if(array[i][j]->getNumber()==-2){
+                DrawRectangle(x,y,cellSize,cellSize,RED);
+            }else{
+                DrawRectangle(x,y,cellSize,cellSize,WHITE);
+            }
+        }
+    }
 }
 

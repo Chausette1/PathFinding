@@ -1,17 +1,28 @@
-#include "raylib.h"  // Inclure l'en-tête de Raylib
+#include "raylib.h"
 #include "Vue/Vue.h"
 #include "modele/Labyrinth.h"
-#include <format>
 
 int main() {
+    Vue vue = Vue(1000, 1000);
     Labyrinth labyrinth;
-    labyrinth.Print();
-    Vue vue = Vue(1400, 1000);
-    labyrinth.PathFiding(vue);
-    labyrinth.DiscoverShortestPath(vue);
+    labyrinth.GenerateMaze();
+
     while (!WindowShouldClose()) {
-        labyrinth.DrawLabyrinth(vue);
+        if (IsKeyPressed(KEY_R)) {
+            labyrinth.GenerateMaze();
+        }
+
+        if (IsKeyPressed(KEY_SPACE)) {
+            labyrinth.PathFiding(vue);
+            labyrinth.DiscoverShortestPath(vue);
+        }
+
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        labyrinth.DrawMaze(vue);
+        EndDrawing();
     }
 
-    return 0; // Fin du programme
+    CloseWindow();
+    return 0;
 }

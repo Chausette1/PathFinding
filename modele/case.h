@@ -16,6 +16,7 @@ private:
     std::tuple<int, int> coordinate;
     bool isWall;
     int number;
+    bool InShortestPath;
 
 public:
     Cellule() {};
@@ -28,6 +29,8 @@ public:
     void Print() const;
     bool IsSameCellule(const Cellule& other) const;
     std::string coordinateToString() const;
+    bool GetIsInShortestPath() const;
+    void SetIsInShortestPath(bool newIsInShortestPath);
 };
 
 

@@ -11,6 +11,8 @@
 #include <thread>
 #include <iostream>
 #include <array>
+#include <random>
+#include <algorithm>
 
 class Labyrinth {
 private:
@@ -22,9 +24,11 @@ private:
     void _BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque<std::shared_ptr<Cellule> > &queue, std::shared_ptr<Cellule>  &end, Vue vue);
     void GetColorByNumber(Color &backColor, Cellule const &cellule);
     void PrintNumber(int posY, int posX, Cellule const &cellule, Font const &fontChose, int const cellSize);
-
+    std::vector<std::vector<int>> GenerateMaze();
+    void _DFS(std::vector<std::vector<int>> &maze, std::tuple<int, int> coord, std::vector<std::tuple<int, int> > &visited);
+    void DoMess(std::vector<std::vector<int>> &maze);
 public:
-    Labyrinth();
+    Labyrinth(bool IsLab);
     void Print() const;
     std::tuple<int,int> GetDimension() const;
     std::shared_ptr<Cellule>  GetCellule(int x, int y) const;

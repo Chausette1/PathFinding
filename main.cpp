@@ -4,13 +4,20 @@
 #include <format>
 
 int main() {
-    Labyrinth labyrinth;
-    labyrinth.Print();
-    Vue vue = Vue(1400, 1000);
-    labyrinth.PathFiding(vue);
-    labyrinth.DiscoverShortestPath(vue);
+    Vue vue = Vue(1000, 1000);
+    Labyrinth labyrinth = Labyrinth(true);
     while (!WindowShouldClose()) {
         labyrinth.DrawLabyrinth(vue);
+        if (IsKeyPressed(KEY_SPACE)) {
+            labyrinth.PathFiding(vue);
+            labyrinth.DiscoverShortestPath(vue);
+        }
+        if (IsKeyPressed(KEY_R)) {
+            labyrinth = Labyrinth(true);
+        }
+        if (IsKeyPressed(KEY_Q)) {
+            labyrinth = Labyrinth(false);
+        }
     }
 
     return 0; // Fin du programme

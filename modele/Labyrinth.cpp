@@ -4,47 +4,39 @@
 
 #include "Labyrinth.h"
 
+#include <format>
 
-Labyrinth::Labyrinth() {
-    constexpr int arraySize = 25;
+
+Labyrinth::Labyrinth(bool Islab) {
+    constexpr int arraySize = 51;
     rows = arraySize;
     cols = arraySize;
 
     array.resize(arraySize, std::vector<std::shared_ptr<Cellule> >(arraySize));
 
-    std::array<std::array<int, arraySize>, arraySize> intArray = {
-        {
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1},
-            {1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1},
-            {1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
-            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-        }
-    };
+    std::vector<std::vector<int> > intArray;
+    if (Islab) {
+        intArray = GenerateMaze();
+    } else {
+        intArray = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, -1, 0, 0, 0, 1, 1, 1, 0, 0},
+            {0, 0, 1, 1, 0, 1, 1, 1, 0, 0},
+            {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 0, 0, 1, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, -2, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+        rows = 10;
+        cols = 10;
+    }
 
-    for (int i = 0; i < arraySize; i++) {
-        array[i].resize(arraySize, std::shared_ptr<Cellule>());
-        for (int j = 0; j < arraySize; j++) {
+    for (int i = 0; i < rows; i++) {
+        array[i].resize(rows, std::shared_ptr<Cellule>());
+        for (int j = 0; j < cols; j++) {
             Cellule cellule(std::tuple<int, int>(i, j), intArray[i][j]);
             array[i][j] = std::make_shared<Cellule>(cellule);
             if (cellule.getNumber() == -1) {
@@ -123,7 +115,7 @@ void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque
             layer++;
             this->DrawLabyrinth(vue);
             using namespace std::chrono_literals;
-            std::this_thread::sleep_for(100ms);
+            std::this_thread::sleep_for(10ms);
         }
 
         std::shared_ptr<Cellule> CurrentCellule = queue.front();
@@ -162,7 +154,7 @@ void Labyrinth::PathFiding(Vue vue) {
 
 void Labyrinth::DiscoverShortestPath(Vue vue) {
     std::shared_ptr<Cellule> temp;
-    std::vector<std::shared_ptr<Cellule> >neigbhors = GetNeighbor(End);
+    std::vector<std::shared_ptr<Cellule> > neigbhors = GetNeighbor(End);
     temp = neigbhors[0];
     for (std::shared_ptr<Cellule> neighbor: neigbhors) {
         if (neighbor->getNumber() > temp->getNumber()) {
@@ -174,10 +166,11 @@ void Labyrinth::DiscoverShortestPath(Vue vue) {
         currentCellule->SetIsInShortestPath(true);
         this->DrawLabyrinth(vue);
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(100ms);
-        std::vector<std::shared_ptr<Cellule> >neigbhors = GetNeighbor(currentCellule);
+        std::this_thread::sleep_for(10ms);
+        std::vector<std::shared_ptr<Cellule> > neigbhors = GetNeighbor(currentCellule);
         for (std::shared_ptr<Cellule> neighbor: neigbhors) {
-            if ((neighbor->getNumber() < currentCellule->getNumber()) && neighbor->getNumber() != -2 && !neighbor->getIsWall()) {
+            if ((neighbor->getNumber() < currentCellule->getNumber()) && neighbor->getNumber() != -2 && !neighbor->
+                getIsWall()) {
                 currentCellule = neighbor;
             }
         }
@@ -192,46 +185,53 @@ void Labyrinth::GetColorByNumber(Color &backColor, Cellule const &cellule) {
     if (cellule.getIsWall()) {
         backColor = BLACK;
     } else if (cellule.GetIsInShortestPath()) {
-        backColor = Color(255,139,223,255);
+        backColor = Color(255, 139, 223, 255);
         return;
-    } else{
+    } else {
         int num = cellule.getNumber();
         if (num == 0 || num == -1 || num == -2) {
             backColor = WHITE;
             return;
         }
-        int pas = 5;
-        int R = 139,G = 255,B = 243, A = 255;
-        if (num <= (255/pas)*1) {
-            R = 255;
-            G = 0 +  num * pas;
-            B = 0;
+        int pas = 15;
+        int R = 139, G = 255, B = 243, A = 255;
+        bool done = false;
+        while (!done) {
+            if (num <= (255 / pas) * 1) {
+                R = 255;
+                G = 0 + num * pas;
+                B = 0;
+                done = true;
+            } else if (num <= (255 / pas) * 2) {
+                R = 255 - num * pas;
+                G = 255;
+                B = 0;
+                done = true;
+            } else if (num <= (255 / pas) * 3) {
+                R = 0;
+                G = 255;
+                B = 0 + num * pas;
+                done = true;
+            } else if (num <= (255 / pas) * 4) {
+                R = 0;
+                G = 255 - num * pas;
+                B = 255;
+                done = true;
+            } else if (num <= (255 / pas) * 5) {
+                R = 0 + num * pas;
+                G = 0;
+                B = 255;
+                done = true;
+            } else if (num <= (255 / pas) * 6) {
+                R = 255;
+                G = 0;
+                B = 255 - num * pas;
+                done = true;
+            } else {
+                num = num - (255 / pas) * 6;
+            }
         }
-        else if (num <= (255/pas)*2) {
-            R = 255 - num * pas;
-            G = 255;
-            B = 0;
-        }
-        else if (num <= (255/pas)*3) {
-            R = 0;
-            G = 255;
-            B = 0 + num * pas;
-        }
-        else if (num <= (255/pas)*4) {
-            R = 0;
-            G = 255 - num * pas;
-            B = 255;
-        }else if (num <=(255/pas)*5) {
-            R = 0 + num * pas;
-            G = 0;
-            B = 255;
-        }
-        else if (num <= (255/pas)*6) {
-            R = 255;
-            G = 0;
-            B = 255 - num * pas;
-        }
-        backColor = Color(R,G,B,A);
+        backColor = Color(R, G, B, A);
     }
 }
 
@@ -266,7 +266,7 @@ void Labyrinth::DrawLabyrinth(Vue const vue) {
                 posY = posY - cellSize / 2;
             }
 
-            PrintNumber(posY, posX, cellule, vue.GetFont(), cellSize);
+            //PrintNumber(posY, posX, cellule, vue.GetFont(), cellSize);
             //DrawRectangleLines(posX, posY, cellSize, cellSize, BLACK);
         }
     }
@@ -279,5 +279,112 @@ void Labyrinth::PrintNumber(int posY, int posX, Cellule const &cellule, Font con
     std::string str = std::to_string(cellule.getNumber());
     const char *charToPrint = str.c_str();
     DrawText(charToPrint, posY, posX, 16, BLACK);
+}
+
+void draw(std::vector<std::vector<int> > maze) {
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(10ms);
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+
+    std::tuple dimension = std::make_tuple(static_cast<int>(maze.size()), static_cast<int>(maze[0].size()));
+    auto [TabSizeX, TabSizeY] = dimension;
+
+    int cellSize = 1000;
+    int decalage = static_cast<int>(cellSize * 0.125);
+    cellSize = static_cast<int>(cellSize * 0.75);
+    cellSize = cellSize / TabSizeX;
+
+    for (int x = 0; x < TabSizeX; x++) {
+        for (int y = 0; y < TabSizeY; y++) {
+            int posX = (x * cellSize) + decalage;
+            int posY = (y * cellSize) + decalage;
+
+            Color backColor;
+            if (maze[y][x] == 0) {
+                backColor = WHITE;
+            } else {
+                backColor = BLACK;
+            }
+
+            DrawRectangle(posX, posY, cellSize, cellSize, backColor);
+        }
+    }
+    EndDrawing();
+}
+
+void Labyrinth::_DFS(std::vector<std::vector<int> > &maze, std::tuple<int, int> coord,
+                     std::vector<std::tuple<int, int> > &visited) {
+    draw(maze);
+
+    auto [x,y] = coord;
+    visited.push_back(std::make_tuple(x, y));
+    std::vector<std::tuple<int, int> > directions = {{0, -2}, {0, 2}, {-2, 0}, {2, 0}};
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::shuffle(directions.begin(), directions.end(), gen);
+
+    for (auto [dx,dy]: directions) {
+        int nx = x + dx;
+        int ny = y + dy;
+
+        bool isVisited = false;
+
+        for (auto vis: visited) {
+            auto [Xvis,Yvis] = vis;
+            isVisited = (Xvis == nx && Yvis == ny);
+            if (isVisited) {
+                break;
+            }
+        }
+        if (nx > 0 && nx < rows - 1 && ny > 0 && ny < cols - 1 && maze[nx][ny] == 0 && !isVisited) {
+            maze[x + dx / 2][y + dy / 2] = 0;
+            _DFS(maze, std::make_tuple(nx, ny), visited);
+        }
+    }
+}
+
+void Labyrinth::DoMess(std::vector<std::vector<int> > &maze) {
+    int messCount = 50;
+    std::random_device rd;
+    std::uniform_int_distribution<int> distrib(1, cols - 2); // Entre 1 et 100
+    std::mt19937 gen(rd());
+    for (int i = messCount - 1; i >= 0; i--) {
+        bool done = false;
+        while (!done) {
+            int x = distrib(gen);
+            int y = distrib(gen);
+
+            if (maze[x][y] == 1 && ((maze[x - 1][y] == 1 && maze[x + 1][y] == 1 && maze[x][y - 1] == 0 && maze[x][y + 1]
+                                     == 0) || ((
+                                        maze[x][y - 1] == 1 && maze[x][y - 1] == 1 && maze[x - 0][y] == 0 && maze[x + 1]
+                                        [y] == 0)))) {
+                done = true;
+                maze[x][y] = 0;
+            }
+        }
+
+        draw(maze);
+    }
+}
+
+std::vector<std::vector<int> > Labyrinth::GenerateMaze() {
+    std::vector<std::vector<int> > maze(cols, std::vector<int>(rows, 1));
+    for (int y = 0; y < cols; y++) {
+        for (int x = 0; x < rows; x++) {
+            if (x % 2 == 1 && y % 2 == 1) {
+                maze[y][x] = 0;
+            }
+        }
+    }
+
+    std::vector<std::tuple<int, int> > visited;
+    _DFS(maze, std::make_tuple(1, 1), visited);
+    DoMess(maze);
+    maze[1][1] = -1;
+    maze[rows - 2][cols - 2] = -2;
+
+    return maze;
 }
 

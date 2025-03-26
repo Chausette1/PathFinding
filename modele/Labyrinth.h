@@ -41,10 +41,6 @@ public:
     void DrawLabyrinth(Vue const vue);
     void DiscoverShortestPath(Vue vue);
 
-    void GenerateMaze();
-    void DrawMaze(Vue vue);
-    Labyrinth(int rows,int cols);
-
 
 
 

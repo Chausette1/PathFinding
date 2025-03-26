@@ -9,10 +9,7 @@ Vue::Vue(const int Width, const int Height) {
     this->screenWidth = Width;
     this->screenHeight = Height;
     this->name = "PathFinding- RayLib";
-    InitWindow(this->screenWidth, this->screenHeight, this->name);
 	SetTargetFPS(60);
-
-    this->font = LoadFont("_deps/raylib-src/examples/text/resources/fonts/pixelplay.png");
 }
 
 int Vue::GetScreenWidth() const{
@@ -23,6 +20,6 @@ int Vue::GetScreenHeight() const {
     return this->screenHeight;
 }
 
-Font Vue::GetFont() const {
-    return this->font;
+char* Vue::GetName() const {
+    return this->name;
 }

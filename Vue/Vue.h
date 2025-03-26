@@ -15,14 +15,12 @@ private:
     int screenWidth;
     int screenHeight;
     char* name;
-    Font font;
-
 
 public:
     Vue(const int Width = 1200, const int Height = 1200);
     int GetScreenWidth() const;
     int GetScreenHeight() const;
-    Font GetFont() const;
+    char* GetName() const;
 };
 
 

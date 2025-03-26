@@ -6,26 +6,29 @@ int main()
 {
     Vue vue = Vue(1000, 1000);
     InitWindow(vue.GetScreenWidth(), vue.GetScreenHeight(), vue.GetName());
+    InitAudioDevice();
+    SetMasterVolume(100);
+    Sound music = LoadSound("musique.wav");
+    Sound TATADA = LoadSound("TATADA.wav");
     Labyrinth labyrinth = Labyrinth(true);
-    labyrinth.PathFiding(vue);
     while (!WindowShouldClose())
     {
         labyrinth.DrawLabyrinth(vue);
 
         if (IsKeyPressed(KEY_SPACE))
         {
+            PlaySound(music);
             labyrinth.PathFiding(vue);
-            std::cout << "aled?" << std::endl;
+            StopSound(music);
+            PlaySound(TATADA);
         }
         if (IsKeyPressed(KEY_R))
         {
             labyrinth = Labyrinth(true);
-            std::cout << "aled?" << std::endl;
         }
         if (IsKeyPressed(KEY_Q))
         {
             labyrinth = Labyrinth(false);
-            std::cout << "aled?" << std::endl;
         }
     }
 

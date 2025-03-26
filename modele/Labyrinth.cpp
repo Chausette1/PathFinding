@@ -11,7 +11,7 @@
 #include <format>
 
 Labyrinth::Labyrinth(bool Islab) {
-    constexpr int arraySize = 51;
+    constexpr int arraySize = 71;
     rows = arraySize;
     cols = arraySize;
 
@@ -111,7 +111,6 @@ std::vector<std::shared_ptr<Cellule> > Labyrinth::GetNeighbor(std::shared_ptr<Ce
 void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited,
                      std::deque<std::shared_ptr<Cellule> > &queue,
                      std::shared_ptr<Cellule> &end, Vue vue) {
-    std::cout << "aaaa" << std::endl;
     int layerSize = 1, NextLayerSize = 0, layer = 0;
     while (!queue.empty()) {
         if (layerSize == 0) {
@@ -190,7 +189,7 @@ void Labyrinth::GetColorByNumber(Color &backColor, Cellule const &cellule) {
     if (cellule.getIsWall()) {
         backColor = BLACK;
     } else if (cellule.GetIsInShortestPath()) {
-        backColor = Color(255, 139, 223, 255);
+        backColor = Color(255, 135, 237, 255);
         return;
     } else {
         int num = cellule.getNumber();
@@ -198,7 +197,7 @@ void Labyrinth::GetColorByNumber(Color &backColor, Cellule const &cellule) {
             backColor = WHITE;
             return;
         }
-        int pas = 15;
+        int pas = 1;
         int R = 139, G = 255, B = 243, A = 255;
         bool done = false;
         while (!done) {
@@ -319,14 +318,12 @@ void draw(std::vector<std::vector<int> > maze) {
 }
 
 void Labyrinth::_DFS(std::vector<std::vector<int> > &maze, std::tuple<int, int> coord,
-                     std::vector<std::tuple<int, int> > &visited) {
+                     std::vector<std::tuple<int, int> > &visited, std::vector<std::tuple<int, int> > &directions,
+                     std::mt19937 &gen) {
     draw(maze);
 
     auto [x, y] = coord;
     visited.push_back(std::make_tuple(x, y));
-    std::vector<std::tuple<int, int> > directions = {{0, -2}, {0, 2}, {-2, 0}, {2, 0}};
-    std::random_device rd;
-    std::mt19937 gen(rd());
 
     std::shuffle(directions.begin(), directions.end(), gen);
 
@@ -336,22 +333,18 @@ void Labyrinth::_DFS(std::vector<std::vector<int> > &maze, std::tuple<int, int> 
 
         bool isVisited = false;
 
-        for (auto vis: visited) {
-            auto [Xvis, Yvis] = vis;
-            isVisited = (Xvis == nx && Yvis == ny);
-            if (isVisited) {
-                break;
-            }
-        }
+        isVisited = std::find(visited.begin(), visited.end(), std::make_tuple(nx, ny)) != visited.end();
+
+
         if (nx > 0 && nx < rows - 1 && ny > 0 && ny < cols - 1 && maze[nx][ny] == 0 && !isVisited) {
             maze[x + dx / 2][y + dy / 2] = 0;
-            _DFS(maze, std::make_tuple(nx, ny), visited);
+            _DFS(maze, std::make_tuple(nx, ny), visited, directions, gen);
         }
     }
 }
 
 void Labyrinth::DoMess(std::vector<std::vector<int> > &maze) {
-    int messCount = 50;
+    int messCount = cols;
     std::random_device rd;
     std::uniform_int_distribution<int> distrib(1, cols - 2); // Entre 1 et 100
     std::mt19937 gen(rd());
@@ -385,7 +378,12 @@ std::vector<std::vector<int> > Labyrinth::GenerateMaze() {
     }
 
     std::vector<std::tuple<int, int> > visited;
-    _DFS(maze, std::make_tuple(1, 1), visited);
+    std::vector<std::tuple<int, int> > directions = {{0, -2}, {0, 2}, {-2, 0}, {2, 0}};
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+
+    _DFS(maze, std::make_tuple(1, 1), visited, directions, gen);
     DoMess(maze);
     maze[1][1] = -1;
     maze[rows - 2][cols - 2] = -2;

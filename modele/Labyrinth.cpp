@@ -11,7 +11,7 @@
 #include <format>
 
 Labyrinth::Labyrinth(bool Islab) {
-    constexpr int arraySize = 71;
+    constexpr int arraySize = 91;
     rows = arraySize;
     cols = arraySize;
 
@@ -22,19 +22,26 @@ Labyrinth::Labyrinth(bool Islab) {
         intArray = GenerateMaze();
     } else {
         intArray = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, -1, 0, 0, 0, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 0, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
-            {0, 0, 1, 1, 0, 0, 1, 1, 0, 0},
-            {0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, -2, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1},
+            {1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1},
+            {1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1},
+            {1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1},
+            {1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 ,0, 0, 0, 1},
+            {1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1},
+            {1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, -2, 0, 0, 0, 1},
+            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
         };
-        rows = 10;
-        cols = 10;
+        rows = 17;
+        cols = 17;
     }
 
     for (int i = 0; i < rows; i++) {
@@ -108,7 +115,7 @@ std::vector<std::shared_ptr<Cellule> > Labyrinth::GetNeighbor(std::shared_ptr<Ce
     return ReturnNeighbor;
 }
 
-void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited,
+void Labyrinth::_BFS(std::set<std::tuple<int, int> > visited,
                      std::deque<std::shared_ptr<Cellule> > &queue,
                      std::shared_ptr<Cellule> &end, Vue vue) {
     int layerSize = 1, NextLayerSize = 0, layer = 0;
@@ -124,7 +131,7 @@ void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited,
 
         std::shared_ptr<Cellule> CurrentCellule = queue.front();
         queue.pop_front();
-        visited.push_back(CurrentCellule);
+        visited.insert(CurrentCellule->getCoordinate());
         layerSize--;
 
         if (CurrentCellule->getNumber() == -2) {
@@ -133,12 +140,14 @@ void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited,
         }
 
         std::vector<std::shared_ptr<Cellule> > Neighbors = GetNeighbor(CurrentCellule);
+
         for (std::shared_ptr<Cellule> neighbor: Neighbors) {
             bool IsVisited = false;
-            for (std::shared_ptr<Cellule> vis: visited) {
-                IsVisited = neighbor->IsSameCellule(*vis);
-                if (IsVisited)
-                    break;
+            auto it = std::find(visited.begin(), visited.end(), neighbor->getCoordinate());
+            if (it != visited.end()) {
+                IsVisited = true;
+            } else {
+                IsVisited = false;
             }
             if (!neighbor->getIsWall() && !IsVisited) {
                 queue.push_back(neighbor);
@@ -150,7 +159,7 @@ void Labyrinth::_BFS(std::vector<std::shared_ptr<Cellule> > &visited,
 }
 
 void Labyrinth::PathFiding(Vue vue) {
-    std::vector<std::shared_ptr<Cellule> > visited;
+    std::set<std::tuple<int, int> > visited;
     std::deque<std::shared_ptr<Cellule> > queue;
     queue.push_back(Start);
     _BFS(visited, queue, End, vue);
@@ -175,7 +184,7 @@ void Labyrinth::DiscoverShortestPath(Vue vue) {
         std::vector<std::shared_ptr<Cellule> > neigbhors = GetNeighbor(currentCellule);
         for (std::shared_ptr<Cellule> neighbor: neigbhors) {
             if ((neighbor->getNumber() < currentCellule->getNumber()) && neighbor->getNumber() != -2 && !neighbor->
-                getIsWall()) {
+                getIsWall() && neighbor->getNumber() != 0) {
                 currentCellule = neighbor;
             }
         }
@@ -286,8 +295,6 @@ void Labyrinth::PrintNumber(int posY, int posX, Cellule const &cellule, Font con
 }
 
 void draw(std::vector<std::vector<int> > maze) {
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(10ms);
     BeginDrawing();
     ClearBackground(RAYWHITE);
 

@@ -9,8 +9,10 @@ int main()
     InitAudioDevice();
     SetMasterVolume(100);
     Sound music = LoadSound("musique.wav");
-    Sound TATADA = LoadSound("TATADA.wav");
+    Sound WIWIWI = LoadSound("WIWIWI.wav");
+    PlaySound(WIWIWI);
     Labyrinth labyrinth = Labyrinth(true);
+    StopSound(WIWIWI);
     while (!WindowShouldClose())
     {
         labyrinth.DrawLabyrinth(vue);
@@ -20,11 +22,12 @@ int main()
             PlaySound(music);
             labyrinth.PathFiding(vue);
             StopSound(music);
-            PlaySound(TATADA);
         }
         if (IsKeyPressed(KEY_R))
         {
+            PlaySound(WIWIWI);
             labyrinth = Labyrinth(true);
+            StopSound(WIWIWI);
         }
         if (IsKeyPressed(KEY_Q))
         {

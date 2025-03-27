@@ -13,6 +13,7 @@
 #include <array>
 #include <random>
 #include <algorithm>
+#include <set>
 
 class Labyrinth {
 private:
@@ -22,7 +23,7 @@ private:
     std::shared_ptr<Cellule> Start;
     std::shared_ptr<Cellule> End;
 
-    void _BFS(std::vector<std::shared_ptr<Cellule> > &visited, std::deque<std::shared_ptr<Cellule> > &queue,
+    void _BFS(std::set<std::tuple<int, int>> visited, std::deque<std::shared_ptr<Cellule> > &queue,
               std::shared_ptr<Cellule> &end, Vue vue);
 
     void GetColorByNumber(Color &backColor, Cellule const &cellule);
